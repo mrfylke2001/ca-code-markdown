@@ -21,11 +21,17 @@ def clean_str(s):
     return s
 
 class CodeSectionGroup(Document):
+    TEXT_BODY_STYLES = [
+        "margin:0;display:inline;",
+        "margin:0 0 1em 0;margin-left: 1em;",
+        "margin:0 0 1em 0;margin-left: 2.5em;"
+    ]
+
     def __init__(self, web_content):
         super().__init__()
 
         soup = BeautifulSoup(web_content, "html.parser")
-        self.text_body = soup.find_all(style="margin:0;display:inline;")
+        self.text_body = soup.find_all(style=self.TEXT_BODY_STYLES)
         self.make_paragraphs()
 
     def make_paragraphs(self):
