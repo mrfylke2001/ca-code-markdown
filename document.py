@@ -5,6 +5,14 @@ class Document:
     def add_paragraph(self, content):
         self._paragraphs.append(content)
 
+    # Exports as a markdown file
+    def export(self, file_name="output.md"):
+        if file_name[-3:] != ".md":
+            file_name += ".md"
+        
+        with open(file_name, "w") as output_file:
+            output_file.write(self.__str__())
+
     def __str__(self):
         separator = "\n\n"
         par_strings = [str(par) for par in self._paragraphs]
@@ -16,7 +24,7 @@ class Heading:
         self.content = content
         self.level = level
 
-    # In Markdown format
+    # In markdown format
     def __str__(self):
         hashes = "#" * self.level
         s = f"{hashes} {self.content}"
