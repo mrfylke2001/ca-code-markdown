@@ -30,12 +30,20 @@ class CodeSectionGroup(Document):
     def __init__(self, web_content):
         super().__init__()
 
-        soup = BeautifulSoup(web_content, "html.parser")
-        self.text_body = soup.find_all(style=self.TEXT_BODY_STYLES)
+        self._soup = BeautifulSoup(web_content, "html.parser")
+
+        self.make_title()
         self.make_paragraphs()
 
+    def make_title(self):
+        html_h5 = self._soup.find(name="h5")
+        title = clean_str(html_h5.string)
+        self.add_paragraph(Heading(title))
+
     def make_paragraphs(self):
-        for html_par in self.text_body:
+        text_body = self._soup.find_all(style=self.TEXT_BODY_STYLES)
+
+        for html_par in text_body:
             previous = html_par.previous_sibling.previous_sibling
             if previous.name == "h6": # if html paragraph is proceeded by section heading
                 section_title = clean_str(previous.string)
